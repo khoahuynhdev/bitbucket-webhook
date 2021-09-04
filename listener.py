@@ -11,6 +11,8 @@ app = Flask(__name__)
 # check for ngrok subdomain
 ngrok = environ.get("NGROK_SUBDOMAIN", "")
 
+# check here for list of events, payload, etc
+# https://support.atlassian.com/bitbucket-cloud/docs/event-payloads/#Updated
 
 def display_intro():
     """Helper method to display introduction message."""
@@ -163,6 +165,7 @@ PR state: {pullrequest_state}
 PR updated date: {formatted_date}
 PR link: {pullrequest_link}''')
 
+        # @TODO handle issue events
         return "OK"
     else:
         return display_html(request)
