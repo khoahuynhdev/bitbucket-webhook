@@ -11,9 +11,9 @@ password = environ.get("SKYPE_BOT_PASSWORD", "")
 channels = {'bitbucket': '19:a95a15304480452cb0ffd8bf8a2668a5@thread.skype',
            'admin': '19:26b7238d7a35454cbbe21263842f5155@thread.skype'
            }
-sk = Skype(email, password)
 
 def send_message_bitbucket(msg):
+  sk = Skype(email, password)
   channel = sk.chats.chat(channels['bitbucket'])
   channel.sendMsg(msg)
 
