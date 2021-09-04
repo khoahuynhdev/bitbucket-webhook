@@ -2,9 +2,10 @@ version: "3"
 
 services:
   web:
-    build: .
+    build:
+      context: .
     env_file: .env
-    command: ["./start.sh"]
+    entrypoint: : ["/app/start.sh"]
     ports:
       - "5000:5000"
     restart: always
