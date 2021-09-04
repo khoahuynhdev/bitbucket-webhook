@@ -8,5 +8,5 @@ services:
       - .env
     entrypoint: ["/app/start.sh"]
     ports:
-      - "8000:8000"
+      - "8000:5000"
     restart: always
