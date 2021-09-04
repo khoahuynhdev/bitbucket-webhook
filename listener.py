@@ -75,6 +75,7 @@ def tracking():
 Pull-request: {pullrequest_link}
 Author: {pullrequest_author}
 Content: {comment_content}''')
+
         if event_key == "repo:push":
             commit_author = data["push"]["changes"][0]["new"]["target"]["author"]["raw"]
             commit_link = data["push"]["changes"][0]["new"]["target"]["links"]["html"]["href"]
@@ -89,6 +90,26 @@ Commit link: {commit_link}
 Commit date: {formatted_date}
 Commit message: {commit_message}''')
 
+        # @TODO add all pull request reviewers
+        # @TODO add all pull request participants
+        if event_key == "pullrequest:created":
+          pullrequest_author = data["actor"]["display_name"]
+          pullrequest_title = data["pullrequest"]["title"]
+          pullrequest_state = data["pullrequest"]["state"]
+          pullrequest_source = data["pullrequest"]["source"]["branch"]["name"]
+          pullrequest_destination = data["pullrequest"]["destination"]["branch"]["name"]
+          pullrequest_created_date = data["pullrequest"]["created_on"]
+          pullrequest_link = data["pullrequest"]["links"]["html"]["href"]
+          send_message_bitbucket(f'''=====PULL REQUEST CREATED=====
+Author: {pullrequest_author}
+PR title: {pullrequest_title}
+PR branch: {pullrequest_source} ===>>> {pullrequest_destination}
+PR state: {pullrequest_state}
+PR date created: {pullrequest_created_date}
+PR link: {pullrequest_link}''')
+
+        if event_key == "pullrequest:updated":
+          print("pull request updated")
         return "OK"
     else:
         return display_html(request)
