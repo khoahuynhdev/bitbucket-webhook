@@ -84,7 +84,8 @@ Content: {comment_content}''')
             repository_name = data["repository"]["full_name"]
 
             formatted_date = parser.parse(commit_date).strftime('%c')
-            send_message_bitbucket(f'''Author: {commit_author}
+            send_message_bitbucket(f'''=====PUSH COMMIT CREATED=====
+Author: {commit_author}
 Repository: {repository_name}
 Commit link: {commit_link}
 Commit date: {formatted_date}
@@ -100,12 +101,13 @@ Commit message: {commit_message}''')
           pullrequest_destination = data["pullrequest"]["destination"]["branch"]["name"]
           pullrequest_created_date = data["pullrequest"]["created_on"]
           pullrequest_link = data["pullrequest"]["links"]["html"]["href"]
+          formatted_date = parser.parse(pullrequest_created_date).strftime('%c')
           send_message_bitbucket(f'''=====PULL REQUEST CREATED=====
 Author: {pullrequest_author}
 PR title: {pullrequest_title}
 PR branch: {pullrequest_source} ===>>> {pullrequest_destination}
 PR state: {pullrequest_state}
-PR date created: {pullrequest_created_date}
+PR date created: {formatted_date}
 PR link: {pullrequest_link}''')
 
         if event_key == "pullrequest:updated":
