@@ -85,7 +85,7 @@ Content: {comment_content}''')
 
             formatted_date = parser.parse(commit_date).strftime('%c')
             send_message_bitbucket(f'''Author: {commit_author}
-Repository: {repository_name} - {repository_link}
+Repository: {repository_name}
 Commit link: {commit_link}
 Commit date: {formatted_date}
 Commit message: {commit_message}
