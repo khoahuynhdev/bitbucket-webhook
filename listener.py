@@ -81,15 +81,13 @@ Content: {comment_content}''')
             commit_date = data["push"]["changes"][0]["new"]["target"]["date"]
             commit_message = data["push"]["changes"][0]["new"]["target"]["message"]
             repository_name = data["repository"]["full_name"]
-            repository_link = data["repository"]["links"]["html"]["href"]
 
             formatted_date = parser.parse(commit_date).strftime('%c')
             send_message_bitbucket(f'''Author: {commit_author}
 Repository: {repository_name}
 Commit link: {commit_link}
 Commit date: {formatted_date}
-Commit message: {commit_message}
-            ''')
+Commit message: {commit_message}''')
 
         return "OK"
     else:
