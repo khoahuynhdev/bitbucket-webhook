@@ -93,7 +93,7 @@ Commit message: {commit_message}''')
 
         # @TODO add all pull request reviewers
         # @TODO add all pull request participants
-        if event_key == "pullrequest:created":
+        if event_key == "pullrequest:created" or event_key == "pullrequest:updated":
           pullrequest_author = data["actor"]["display_name"]
           pullrequest_title = data["pullrequest"]["title"]
           pullrequest_state = data["pullrequest"]["state"]
@@ -107,11 +107,26 @@ Author: {pullrequest_author}
 PR title: {pullrequest_title}
 PR branch: {pullrequest_source} ===>>> {pullrequest_destination}
 PR state: {pullrequest_state}
-PR date created: {formatted_date}
+PR date : {formatted_date}
 PR link: {pullrequest_link}''')
 
-        if event_key == "pullrequest:updated":
-          print("pull request updated")
+        if event_key == "pullrequest:changes_request_created":
+          pullrequest_author = data["actor"]["display_name"]
+          pullrequest_title = data["pullrequest"]["title"]
+          pullrequest_state = data["pullrequest"]["state"]
+          pullrequest_source = data["pullrequest"]["source"]["branch"]["name"]
+          pullrequest_destination = data["pullrequest"]["destination"]["branch"]["name"]
+          pullrequest_link = data["pullrequest"]["links"]["html"]["href"]
+          pullrequest_change_request_created_date = data["changes_request"]["date"]
+          pullrequest_change_request_requestee = data["changes_request"]["user"]["display_name"]
+          formatted_date = parser.parse(pullrequest_change_request_created_date).strftime('%c')
+          send_message_bitbucket(f'''=====CHANGE REQUEST CREATED=====
+Author: {pullrequest_author}
+PR title: {pullrequest_title}
+PR branch: {pullrequest_source} ===>>> {pullrequest_destination}
+PR change request requestee: {pullrequest_change_request_requestee}
+PR change request date: {formatted_date}
+PR link: {pullrequest_link}''')
         return "OK"
     else:
         return display_html(request)
