@@ -3,3 +3,4 @@ honcho==1.0.1
 SkPy
 python-dotenv
 python-dateutil
+gunicorn
