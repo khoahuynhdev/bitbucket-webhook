@@ -127,6 +127,42 @@ PR branch: {pullrequest_source} ===>>> {pullrequest_destination}
 PR change request requestee: {pullrequest_change_request_requestee}
 PR change request date: {formatted_date}
 PR link: {pullrequest_link}''')
+
+        if event_key == "pullrequest:approved":
+          pullrequest_author = data["actor"]["display_name"]
+          pullrequest_title = data["pullrequest"]["title"]
+          pullrequest_state = data["pullrequest"]["state"]
+          pullrequest_source = data["pullrequest"]["source"]["branch"]["name"]
+          pullrequest_destination = data["pullrequest"]["destination"]["branch"]["name"]
+          pullrequest_link = data["pullrequest"]["links"]["html"]["href"]
+          pullrequest_approved_created_date = data["approval"]["date"]
+          pullrequest_approver = data["approval"]["user"]["display_name"]
+          formatted_date = parser.parse(pullrequest_approved_created_date).strftime('%c')
+          send_message_bitbucket(f'''=====PULL REQUEST APPROVED=====
+Author: {pullrequest_author}
+PR title: {pullrequest_title}
+PR branch: {pullrequest_source} ===>>> {pullrequest_destination}
+PR approver: {pullrequest_approver}
+PR approval date: {formatted_date}
+PR link: {pullrequest_link}''')
+
+        if event_key == "pullrequest:fulfilled" or event_key == "pullrequest:rejected":
+          pullrequest_author = data["actor"]["display_name"]
+          pullrequest_title = data["pullrequest"]["title"]
+          pullrequest_state = data["pullrequest"]["state"]
+          pullrequest_source = data["pullrequest"]["source"]["branch"]["name"]
+          pullrequest_destination = data["pullrequest"]["destination"]["branch"]["name"]
+          pullrequest_link = data["pullrequest"]["links"]["html"]["href"]
+          pullrequest_updated_date = data["pullrequest"]["updated_on"]
+          formatted_date = parser.parse(pullrequest_updated_date).strftime('%c')
+          send_message_bitbucket(f'''=====PULL REQUEST MERGED=====
+Author: {pullrequest_author}
+PR title: {pullrequest_title}
+PR branch: {pullrequest_source} ===>>> {pullrequest_destination}
+PR state: {pullrequest_state}
+PR updated date: {formatted_date}
+PR link: {pullrequest_link}''')
+
         return "OK"
     else:
         return display_html(request)
