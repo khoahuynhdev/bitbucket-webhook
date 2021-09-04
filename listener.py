@@ -1,6 +1,7 @@
 """Listener module."""
 from sys import platform as _platform
 from os import environ
+from dateutil import parser
 import json
 
 from flask import Flask, request
@@ -64,7 +65,8 @@ def tracking():
     """Endpoint for receiving webhook from bitbucket."""
     if request.method == "POST":
         data = request.get_json()
-        if request.headers.get("X-Event-Key") == "pullrequest:comment_created":
+        event_key = request.headers.get("X-Event-Key")
+        if event_key == "pullrequest:comment_created":
             comment_content = data["comment"]["content"]["raw"]
             pullrequest_author = data["pullrequest"]["author"]["display_name"]
             pullrequest_link = data["pullrequest"]["links"]["html"]["href"]
@@ -73,13 +75,22 @@ def tracking():
 Pull-request: {pullrequest_link}
 Author: {pullrequest_author}
 Content: {comment_content}''')
-        else:
-            commit_author = data["actor"]
-            commit_hash = data["push"]["changes"][0]["new"]["target"]["hash"][:7]
-            commit_url = data["push"]["changes"][0]["new"]["target"]["links"]
-            commit_url = commit_url["html"]["href"]
-            print("Webhook received! %s committed %s" % (commit_author,
-                                                         commit_hash))
+        if event_key == "repo:push":
+            commit_author = data["push"]["changes"][0]["new"]["target"]["author"]["raw"]
+            commit_link = data["push"]["changes"][0]["new"]["target"]["links"]["html"]["href"]
+            commit_date = data["push"]["changes"][0]["new"]["target"]["date"]
+            commit_message = data["push"]["changes"][0]["new"]["target"]["message"]
+            repository_name = data["repository"]["full_name"]
+            repository_link = data["repository"]["links"]["html"]["href"]
+
+            formatted_date = parser.parse(commit_date).strftime('%c')
+            send_message_bitbucket(f'''Author: {commit_author}
+Repository: {repository_name} - {repository_link}
+Commit link: {commit_link}
+Commit date: {formatted_date}
+Commit message: {commit_message}
+            ''')
+
         return "OK"
     else:
         return display_html(request)
