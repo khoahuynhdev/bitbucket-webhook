@@ -10,6 +10,7 @@ app = Flask(__name__)
 
 # check for ngrok subdomain
 ngrok = environ.get("NGROK_SUBDOMAIN", "")
+app_env = environ.get("ENV", "production")
 
 # check here for list of events, payload, etc
 # https://support.atlassian.com/bitbucket-cloud/docs/event-payloads/#Updated
@@ -173,4 +174,7 @@ PR link: {pullrequest_link}''')
 
 if __name__ == "__main__":
     display_intro()
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    if app_env == "production":
+      app.run()
+    else:
+      app.run(host="0.0.0.0", port=5000, debug=True)
