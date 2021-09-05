@@ -1,11 +1,11 @@
-This repository sets up a simple Flask server to receive [Bitbucket](https://bitbucket.com) webhooks and notifies you via Mac OS X Notification Center
+This repository sets up a simple Flask server to receive [Bitbucket](https://bitbucket.com) webhooks and notifies you via Skype channel
 
 # Requirements
 
 - Mac OS X 10.8+
 - Python
 - Pip
-- [ngrok](https://ngrok.com/) (Note: `brew install ngrok` installs an old version. Use latest ngrok download instead.)
+- [ngrok](https://ngrok.com/) (Note: `brew install ngrok` installs an old version. Use latest ngrok download instead, for development only)
 - virtualenv (optional)
 
 # Installation
