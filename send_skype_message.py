@@ -20,6 +20,11 @@ def send_message_bitbucket(msg):
   channel = sk.chats.chat(channels['bitbucket'])
   channel.sendMsg(msg)
 
+def send_message_ssh(msg):
+  if is_token_expired():
+    login_with_soap()
+  channel = sk.chats.chat(channels['admin'])
+  channel.sendMsg(msg)
 
 def is_authenticated():
   return sk.conn.connected

@@ -5,7 +5,7 @@ from dateutil import parser
 import json
 
 from flask import Flask, request
-from send_skype_message import send_message_bitbucket
+from send_skype_message import send_message_bitbucket, send_message_ssh
 app = Flask(__name__)
 
 # check for ngrok subdomain
@@ -62,6 +62,15 @@ def index():
     """Endpoint for the root of the Flask app."""
     return display_html(request)
 
+@app.route("/ssh", methods=["POST"])
+def ssh_callback():
+    """Endpoint for ssh from server"""
+    data = request.get_json()
+    user = data["user"]
+    user_host = data["user_host"]
+    host = data["host"]
+    send_message_ssh(f'''ssh login: {user} from {user_host} on {host}''')
+    return "OK"
 
 @app.route("/webhook", methods=["GET", "POST"])
 def tracking():
