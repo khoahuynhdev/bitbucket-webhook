@@ -83,7 +83,8 @@ def tracking():
             pullrequest_author = data["pullrequest"]["author"]["display_name"]
             pullrequest_link = data["pullrequest"]["links"]["html"]["href"]
             comment_actor = data["actor"]["display_name"]
-            send_message_bitbucket(f'''Commenter: {comment_actor}
+            send_message_bitbucket(f'''=====COMMENT CREATED=====
+Commenter: {comment_actor}
 Pull-request: {pullrequest_link}
 Author: {pullrequest_author}
 Content: {comment_content}''')
