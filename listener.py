@@ -94,12 +94,14 @@ Content: {comment_content}''')
             commit_link = data["push"]["changes"][0]["new"]["target"]["links"]["html"]["href"]
             commit_date = data["push"]["changes"][0]["new"]["target"]["date"]
             commit_message = data["push"]["changes"][0]["new"]["target"]["message"]
+            commit_branch = data["push"]["changes"][0]["new"]["name"]
             repository_name = data["repository"]["full_name"]
 
             formatted_date = parser.parse(commit_date).strftime('%c')
             send_message_bitbucket(f'''=====PUSH COMMIT CREATED=====
 Author: {commit_author}
 Repository: {repository_name}
+Branch: {commit_branch}
 Commit link: {commit_link}
 Commit date: {formatted_date}
 Commit message: {commit_message}''')
